@@ -43,12 +43,12 @@ app.post('/api/notes', (req, res)=>{
             id: 1
         }
         notesArr.push(newNote)
-        console.log(notesArr)
+        /* console.log(notesArr)
         console.log(typeof notesArr)
 
-        let noteString = JSON.stringify(notesArr)
+        let noteString =  */
 
-        fs.writeFile('./db/db.json', noteString, err => {
+        fs.writeFile('./db/db.json', JSON.stringify(notesArr), err => {
             err 
             ? console.err(err)
             : res.send('New note added to JSON file')
@@ -59,6 +59,9 @@ app.post('/api/notes', (req, res)=>{
 })
 
 // DELETE request for notes
+app.delete('/api/notes', (req, res)=>{
+
+})
  
 
 app.listen(PORT,()=>
