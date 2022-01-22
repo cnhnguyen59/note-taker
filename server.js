@@ -2,11 +2,7 @@ const express = require('express');
 const path = require('path');
 const {v4: uuidv4} = require('uuid')
 const fs = require('fs')
-const notesLog = require('./db/db.json')
-
-let rawData = fs.readFileSync('./db/db.json')
-let notesArr = JSON.parse(rawData)
-console.log(notesArr)
+let notesLog = require('./db/db.json')
 
 const PORT = 4000;
 
@@ -42,21 +38,31 @@ app.post('/api/notes', (req, res)=>{
             text,
             id: uuidv4()
         }
-        notesArr.push(newNote)
+
         notesLog.push(newNote)
 
-        fs.writeFile('./db/db.json', JSON.stringify(notesArr), err => {
+        fs.writeFile('./db/db.json', JSON.stringify(notesLog), err => {
             err 
             ? console.err(err)
-            : res.send('New note added to JSON file') 
+            : res.send('New note added to log') 
          })
     }
 })
 
 // DELETE request for notes
-/* app.delete('/api/notes', (req, res)=>{
+app.delete('/api/notes/:id', (req, res)=>{
+    let deleteId = req.params.id
+    if(notesLog.some((note) => note.id == deleteId)){
+        let updatedNotes = notesLog.filter(note => note.id != deleteId)
+        notesLog = updatedNotes
+        fs.writeFile('./db/db.json', JSON.stringify(notesLog), err => {
+            err 
+            ? console.err(err)
+            : res.send('Note deleted from log') 
+         })
+    }
 
-}) */
+})
  
 
 app.listen(PORT,()=>
