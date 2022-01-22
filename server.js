@@ -3,9 +3,7 @@ const path = require('path');
 const {v4: uuidv4} = require('uuid')
 const fs = require('fs')
 let notesLog = require('./db/db.json')
-
-/* const PORT = 4000; */
-
+ 
 const app = express();
 
 app.use(express.json());
