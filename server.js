@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const {v4: uuidv4} = require('uuid')
 const fs = require('fs')
 const notesLog = require('./db/db.json')
 
@@ -28,7 +29,6 @@ app.get('/notes', (req, res) =>
 //GET requets for notes
 app.get('/api/notes', (req, res) =>
   res.json(notesLog)
-  
 );
 
 //POST requets for notes
@@ -40,28 +40,23 @@ app.post('/api/notes', (req, res)=>{
         const newNote = {
             title,
             text,
-            id: 1
+            id: uuidv4()
         }
         notesArr.push(newNote)
-        /* console.log(notesArr)
-        console.log(typeof notesArr)
-
-        let noteString =  */
+        notesLog.push(newNote)
 
         fs.writeFile('./db/db.json', JSON.stringify(notesArr), err => {
             err 
             ? console.err(err)
-            : res.send('New note added to JSON file')
-     
+            : res.send('New note added to JSON file') 
          })
-        
     }
 })
 
 // DELETE request for notes
-app.delete('/api/notes', (req, res)=>{
+/* app.delete('/api/notes', (req, res)=>{
 
-})
+}) */
  
 
 app.listen(PORT,()=>
